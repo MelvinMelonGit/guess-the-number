@@ -74,7 +74,7 @@ function getComputerChoice() {
     setTimeout(() => {
         let computerChoice = Math.floor(Math.random() * 10)
         currentNumberTotal += computerChoice
-        currentNumberTotalHTML.textContent = currentNumberTotal
+        currentNumberTotalHTML.textContent = 'The current total is ' + currentNumberTotal
         currentNumberTotalResults.textContent = `${playersArray[1]} chose the number ` + computerChoice
     }, 800)
     setTimeout(() => {
