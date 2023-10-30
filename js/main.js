@@ -5,7 +5,7 @@ const currentPlayerCardsHTML = document.querySelector('ul')
 const playersArray = ['Human', 'AI']
 
 //hidden number to compare with current number total
-const gameNumber = createNumber(2)
+const hiddenNumber = createNumber(2)
 
 let currentNumberTotal = 0
 
@@ -45,30 +45,24 @@ function setPlayerCards(number) {
 function getWinner() {
     let winner
     currentPlayerId === 0 ? winner = 'AI' : winner = 'Human'
-    if (currentNumberTotal >= gameNumber) {
-        return currentNumberTotalResults.textContent = `${winner} Wins! The hidden number is ${gameNumber}! Refresh the page to play again!`
+    if (currentNumberTotal >= hiddenNumber) {
+        return currentNumberTotalResults.textContent = `${winner} Wins! The hidden number is ${hiddenNumber}! Refresh the page to play again!`
     }
 }
 
 //for AI logic
 function getComputerChoice() {
     //if game ends, disable buttons
-    if (currentNumberTotal >= gameNumber)  {
-        //prevent click events during AI turn
+    if (currentNumberTotal >= hiddenNumber) {
+            //prevent click events during AI turn
         const buttons = currentPlayerCardsHTML.querySelectorAll("button")
 
         Array.from(buttons).forEach(btn => {
             btn.disabled = true
         })
-        return 
+        return
     }
-    //prevent click events during AI turn
-    const buttons = currentPlayerCardsHTML.querySelectorAll("button")
-
-    Array.from(buttons).forEach(btn => {
-        btn.disabled = true
-    })
-
+    
     currentPlayerId = 1
     currentNumberTotalResults.textContent = `${playersArray[1]} is thinking...`
     setTimeout(() => {
@@ -76,13 +70,13 @@ function getComputerChoice() {
         currentNumberTotal += computerChoice
         currentNumberTotalHTML.textContent = 'The current total is ' + currentNumberTotal
         currentNumberTotalResults.textContent = `${playersArray[1]} chose the number ` + computerChoice
-    }, 800)
+    }, 900)
     setTimeout(() => {
         currentNumberTotalResults.textContent = 'Your turn...'
         getWinner()
         //get a new set of random cards
         setPlayerCards(3)
-    }, 1800)
+    }, 2000)
 }
 
 function playGame() {
@@ -90,7 +84,7 @@ function playGame() {
 
     function selectCard(e) {
         //if game ends, disable buttons
-        if (currentNumberTotal >= gameNumber)  {
+        if (currentNumberTotal >= hiddenNumber)  {
             //prevent click events during AI turn
             const buttons = currentPlayerCardsHTML.querySelectorAll("button")
 
@@ -108,15 +102,13 @@ function playGame() {
             btn.disabled = false
         })
 
-        if (!e.target.closest("li")) return
+        if (!e.target.closest("button")) return
         setCurrentNumberTotal(e.target.textContent)
 
         getWinner()
 
-        //await one second of computer to decide
-        setTimeout(() => {
-            getComputerChoice()
-        }, 300)
+        //await some time for computer to decide
+        getComputerChoice()
 
         currentPlayerCardsHTML.removeEventListener('mouseup', selectCard)
     }
